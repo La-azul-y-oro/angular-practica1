@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
-import { MiServicioService } from '../../mi-servicio.service';
+import { MiServicioService } from '../../services/mi-servicio.service';
+import { DosComponent } from '../dos/dos.component';
 
 @Component({
   selector: 'app-uno',
   standalone: true,
-  imports: [],
+  imports: [DosComponent],
   templateUrl: './uno.component.html',
   styleUrl: './uno.component.css'
 })
 export class UnoComponent {
   title : string = "Mi componente";
+  fontSizePx = 16;
 
   getTitle(){
     return this.title;
@@ -19,7 +21,7 @@ export class UnoComponent {
     this.title = "Bocaaaaaa";
   }
 
-  constructor(private service:MiServicioService) {
+  constructor(private service: MiServicioService) {
 
   }
 
