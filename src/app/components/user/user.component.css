@@ -1,0 +1,32 @@
+p {
+    font-size: 14px;
+}
+
+.font-10{
+    font-size: 10px;
+}
+
+span {
+    font-weight: 800;
+}
+
+.shadow-div {
+    opacity: 0.4;
+}
+
+.modal-form {
+    background-color: white;
+    width: 50vw;
+    height: 50vh;
+    padding: 1rem;
+    border: 1px solid rgba(128, 128, 128, 0.278);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.card-container{
+    max-height: 85vh;
+    overflow-y: auto;
+}
