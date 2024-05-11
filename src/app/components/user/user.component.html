@@ -1,0 +1,56 @@
+<div [ngClass]="{ 'shadow-div': showModal }">
+  <div class="d-flex row my-3 justify-content-between">
+    <h4 class="col-4">Listado de usuarios:</h4>
+    <button type="button" class="btn btn-primary col-2" (click)="handleModal(true)">Crear usuario</button>
+  </div>
+  <div class="d-flex row gap-1 justify-content-center card-container">
+    <div *ngIf="userList.length == 0"><p>No existen usuarios creados</p></div>
+    <div *ngFor="let u of userList" class="card col-3">
+      <div class="card-body">
+        <h5 class="card-title">{{ u.username }}</h5>
+        <p class="card-text"><span>email:</span> {{ u.email }}</p>
+        <button type="button" class="btn btn-danger font-10" (click)="deleteUser(u.id)">Borrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template [ngIf]="showToast">
+  <app-push [message]="messageToast" (close)="showToast = false"></app-push>
+</ng-template>
+
+<div *ngIf="showModal" class="modal-form">
+  <form [formGroup]="userForm">
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input
+        type="text"
+        class="form-control"
+        id="username"
+        formControlName="username"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        formControlName="email"
+      />
+    </div>
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        formControlName="password"
+      />
+    </div>
+    <div class="text-end">
+      <button type="submit" class="btn btn-secondary me-2" (click)="handleModal(false)">Cancelar</button>
+      <button type="submit" class="btn btn-primary" (click)="createUser()">Enviar</button>
+    </div>
+  </form>
+</div>

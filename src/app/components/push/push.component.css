@@ -1,0 +1,28 @@
+
+hr{
+    margin: 0;
+}
+
+.push-container{
+    width: 15rem;
+    height: 3.5rem;
+    background-color: rgb(232, 219, 219);
+    border: 1px solid rgb(106, 100, 100);;
+    border-radius: 10px;
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+}
+
+.push-title{
+    font-size: 12px;
+}
+
+.push-msg{
+    font-size: 11px;
+}
+
+button{
+    background-color: transparent;
+    border: none;
+}
