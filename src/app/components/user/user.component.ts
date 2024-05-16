@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PushComponent } from '../push/push.component';
 
 @Component({
@@ -19,15 +19,19 @@ export class UserComponent {
   messageToast : string = "";
 
   userForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl('')
+    username: new FormControl('', Validators.required),
+    email: new FormControl('', Validators.required),
+    password: new FormControl('', Validators.required)
   });
-
 
   constructor(
     private userService : UserService,
   ){}
+
+  showMsgError(nameField : string){
+    let field = this.userForm.get(nameField); 
+    return (field?.dirty || field?.touched) && field?.invalid;
+  }
 
   ngOnInit(){
     this.loadUsers();
@@ -36,7 +40,7 @@ export class UserComponent {
   loadUsers(){
     this.userService.getAll().subscribe(response => {
       this.userList = response
-        .filter(u => u.enabled === true && u.id !== undefined)
+        .filter(u => u.enabled === true)
         .sort((user1, user2) => (user2.id ?? 0) - (user1.id ?? 0));
     });
   }
@@ -51,6 +55,8 @@ export class UserComponent {
   }
 
   createUser(){
+    if(this.userForm.invalid) return;
+
     let user : User = {
       username: this.userForm.get('username')?.value ?? "",
       email: this.userForm.get('email')?.value ?? "",
@@ -61,12 +67,13 @@ export class UserComponent {
     this.userService.createUser(user).subscribe(
       {
         next: () => {
-          this.showModal = false;
           this.loadUsers();
+          this.handleModal(false);
           this.handleToast("El usuario se ha creado correctamente");
         },
         error: (error) => {
           console.error(error);
+          this.handleModal(false);
           this.handleToast("Ha ocurrido un error al crear el usuario");
         },
       }
@@ -97,7 +104,4 @@ export class UserComponent {
     }, 3500);
   }
   
-  closeToast(){
-    this.showToast = false;
-  }
 }
