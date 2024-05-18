@@ -17,7 +17,7 @@ span {
 .modal-form {
     background-color: white;
     width: 50vw;
-    height: 50vh;
+    min-height: 55vh;
     padding: 1rem;
     border: 1px solid rgba(128, 128, 128, 0.278);
     position: absolute;

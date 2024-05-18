@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PushComponent } from '../push/push.component';
 
 @Component({
@@ -13,21 +13,34 @@ import { PushComponent } from '../push/push.component';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  constructor(
+    private userService : UserService,
+    private fb : FormBuilder
+  ){}
+
   userList : User [] = [];
   showModal : boolean = false;
   showToast : boolean = false;
   messageToast : string = "";
 
-  userForm = new FormGroup({
-    username: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl('')
+  // ejemplo "clasico"
+  // userForm = new FormGroup({
+  //   username: new FormControl('', Validators.required),
+  //   email: new FormControl('', Validators.required),
+  //   password: new FormControl('', Validators.required)
+  // });
+  
+  // utilizando FormBuilder
+  userForm : FormGroup = this.fb.group({
+    username: ['', [Validators.required, Validators.minLength(5)]],
+    email: ['', Validators.required],
+    password: ['', Validators.required]
   });
 
-
-  constructor(
-    private userService : UserService,
-  ){}
+  showMsgError(nameField : string){
+    let field = this.userForm.get(nameField); 
+    return (field?.dirty || field?.touched) && field?.invalid;
+  }
 
   ngOnInit(){
     this.loadUsers();
@@ -36,8 +49,8 @@ export class UserComponent {
   loadUsers(){
     this.userService.getAll().subscribe(response => {
       this.userList = response
-        .filter(u => u.enabled === true && u.id !== undefined)
-        .sort((user1, user2) => (user2.id ?? 0) - (user1.id ?? 0));
+        .filter(u => u.enabled === true)
+        .sort((user1, user2) => user2.id - user1.id);
     });
   }
 
@@ -51,22 +64,20 @@ export class UserComponent {
   }
 
   createUser(){
-    let user : User = {
-      username: this.userForm.get('username')?.value ?? "",
-      email: this.userForm.get('email')?.value ?? "",
-      password: this.userForm.get('password')?.value ?? "",
-      enabled: true,
-    }
+    if(this.userForm.invalid) return;
+
+    let user : any = this.userForm.value;
 
     this.userService.createUser(user).subscribe(
       {
         next: () => {
-          this.showModal = false;
           this.loadUsers();
+          this.handleModal(false);
           this.handleToast("El usuario se ha creado correctamente");
         },
         error: (error) => {
           console.error(error);
+          this.handleModal(false);
           this.handleToast("Ha ocurrido un error al crear el usuario");
         },
       }
@@ -97,7 +108,4 @@ export class UserComponent {
     }, 3500);
   }
   
-  closeToast(){
-    this.showToast = false;
-  }
 }
