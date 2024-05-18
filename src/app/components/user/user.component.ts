@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PushComponent } from '../push/push.component';
 
 @Component({
@@ -13,20 +13,29 @@ import { PushComponent } from '../push/push.component';
   styleUrl: './user.component.css'
 })
 export class UserComponent {
+  constructor(
+    private userService : UserService,
+    private fb : FormBuilder
+  ){}
+
   userList : User [] = [];
   showModal : boolean = false;
   showToast : boolean = false;
   messageToast : string = "";
 
-  userForm = new FormGroup({
-    username: new FormControl('', Validators.required),
-    email: new FormControl('', Validators.required),
-    password: new FormControl('', Validators.required)
+  // ejemplo "clasico"
+  // userForm = new FormGroup({
+  //   username: new FormControl('', Validators.required),
+  //   email: new FormControl('', Validators.required),
+  //   password: new FormControl('', Validators.required)
+  // });
+  
+  // utilizando FormBuilder
+  userForm : FormGroup = this.fb.group({
+    username: ['', [Validators.required, Validators.minLength(5)]],
+    email: ['', Validators.required],
+    password: ['', Validators.required]
   });
-
-  constructor(
-    private userService : UserService,
-  ){}
 
   showMsgError(nameField : string){
     let field = this.userForm.get(nameField); 
@@ -41,7 +50,7 @@ export class UserComponent {
     this.userService.getAll().subscribe(response => {
       this.userList = response
         .filter(u => u.enabled === true)
-        .sort((user1, user2) => (user2.id ?? 0) - (user1.id ?? 0));
+        .sort((user1, user2) => user2.id - user1.id);
     });
   }
 
@@ -57,12 +66,7 @@ export class UserComponent {
   createUser(){
     if(this.userForm.invalid) return;
 
-    let user : User = {
-      username: this.userForm.get('username')?.value ?? "",
-      email: this.userForm.get('email')?.value ?? "",
-      password: this.userForm.get('password')?.value ?? "",
-      enabled: true,
-    }
+    let user : any = this.userForm.value;
 
     this.userService.createUser(user).subscribe(
       {
