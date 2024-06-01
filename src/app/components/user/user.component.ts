@@ -4,11 +4,12 @@ import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { PushComponent } from '../push/push.component';
+import { EditUserComponent } from '../edit-user/edit-user.component';
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, PushComponent],
+  imports: [CommonModule, ReactiveFormsModule, PushComponent, EditUserComponent],
   templateUrl: './user.component.html',
   styleUrl: './user.component.css'
 })
@@ -29,18 +30,6 @@ export class UserComponent {
   //   email: new FormControl('', Validators.required),
   //   password: new FormControl('', Validators.required)
   // });
-  
-  // utilizando FormBuilder
-  userForm : FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.minLength(5)]],
-    email: ['', Validators.required],
-    password: ['', Validators.required]
-  });
-
-  showMsgError(nameField : string){
-    let field = this.userForm.get(nameField); 
-    return (field?.dirty || field?.touched) && field?.invalid;
-  }
 
   ngOnInit(){
     this.loadUsers();
@@ -55,33 +44,7 @@ export class UserComponent {
   }
 
   handleModal(value : boolean){
-    if(value){
-      this.showModal = true;
-    }else{
-      this.showModal = false;
-      this.userForm.reset(); 
-    }
-  }
-
-  createUser(){
-    if(this.userForm.invalid) return;
-
-    let user : any = this.userForm.value;
-
-    this.userService.createUser(user).subscribe(
-      {
-        next: () => {
-          this.loadUsers();
-          this.handleModal(false);
-          this.handleToast("El usuario se ha creado correctamente");
-        },
-        error: (error) => {
-          console.error(error);
-          this.handleModal(false);
-          this.handleToast("Ha ocurrido un error al crear el usuario");
-        },
-      }
-    )
+    this.showModal = value;
   }
 
   deleteUser(id : any){
@@ -107,5 +70,15 @@ export class UserComponent {
       this.showToast = false;
     }, 3500);
   }
-  
+
+  handleEditEvent(value : boolean) {
+
+    this.showModal = false;
+
+    if(value){
+      this.handleToast("El usuario se ha creado correctamente");
+    } else{
+      this.handleToast("Ha ocurrido un error al crear el usuario");
+    }
+  }
 }
