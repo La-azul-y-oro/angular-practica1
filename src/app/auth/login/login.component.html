@@ -1,0 +1,36 @@
+<form [formGroup]="userForm">
+  <div class="mb-3">
+    <label for="email" class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      formControlName="email"
+    />
+    <div *ngIf="showMsgError('email')" class="text-danger">
+      El email es obligatorio.
+    </div>
+  </div>
+  <div class="mb-3">
+    <label for="password" class="form-label">Password</label>
+    <input
+      type="password"
+      class="form-control"
+      id="password"
+      formControlName="password"
+    />
+    <div *ngIf="showMsgError('password')" class="text-danger">
+      El password es obligatorio.
+    </div>
+  </div>
+  <div class="text-end">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      (click)="login()"
+      [disabled]="userForm.invalid"
+    >
+      Enviar
+    </button>
+  </div>
+</form>

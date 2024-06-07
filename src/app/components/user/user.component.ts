@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { User } from '../../interfaces/user';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { PushComponent } from '../push/push.component';
 import { EditUserComponent } from '../edit-user/edit-user.component';
 
