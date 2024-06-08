@@ -30,3 +30,7 @@ span {
     max-height: 85vh;
     overflow-y: auto;
 }
+
+.vw-90{
+    width: 90vw;
+}
