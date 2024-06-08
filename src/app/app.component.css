@@ -1,0 +1,13 @@
+.main-content {
+    padding-top: 60px; /* Altura del header fijo */
+    padding-bottom: 60px; /* Altura del footer fijo */
+    height: 100vh;
+}
+ 
+.footer {
+    height: 60px;
+}
+
+.header {
+    height: 60px;
+}

@@ -12,8 +12,9 @@ html {
 }
 
 body {
-    background: rgb(2, 0, 36);
-    background: linear-gradient(210deg, rgba(2, 0, 36, 1) 9%, rgba(0, 212, 255, 1) 54%, rgba(255, 255, 255, 1) 100%);
+    background: rgb(0, 194, 255);
+    background: linear-gradient(150deg, rgba(0, 194, 255, 1) 0%, rgba(159, 251, 255, 1) 24%, rgba(255, 255, 255, 1) 100%);
+    font-family: "Montserrat", sans-serif;
 }
 
 .ng-valid:not(form).ng-touched {
@@ -24,11 +25,4 @@ body {
 .ng-invalid:not(form).ng-touched {
     border-left: 5px solid #a94442;
     /* red */
-}
-
-.center{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
 }
