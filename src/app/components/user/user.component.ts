@@ -72,11 +72,11 @@ export class UserComponent {
   }
 
   handleEditEvent(value : boolean) {
-
     this.showModal = false;
 
     if(value){
       this.handleToast("El usuario se ha creado correctamente");
+      this.loadUsers();
     } else{
       this.handleToast("Ha ocurrido un error al crear el usuario");
     }

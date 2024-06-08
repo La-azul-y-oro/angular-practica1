@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AuthService } from '../service/auth.service';
+import { UserRegister } from '../interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,18 +13,35 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
+  showToast : boolean = false;
+  messageToast : string = "";
 
-  constructor (private fb : FormBuilder){}
+  constructor (
+    private fb : FormBuilder,
+    private authService : AuthService,
+    private router : Router
+  ){}
 
   userForm : FormGroup = this.fb.group({
-    username: ['', Validators.required, Validators.email],
     firstname: ['', Validators.required],
     lastname: ['', Validators.required],
-    password: ['', Validators.required, Validators.minLength(8)]
+    username: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]]
   })
 
   register(){
-    //implementar metodo login
+    let user : UserRegister = this.userForm.value;
+    this.authService.register(user).subscribe({
+      next: (token) => {
+        alert("El usuario ha sido creado");
+        this.router.navigate(['/usuarios']);
+      },
+      error: (error) => {
+        console.error(error);
+        alert("El usuario no ha podido crearse");
+      }
+    })
+    
   }
 
   showMsgError(nameField : string){

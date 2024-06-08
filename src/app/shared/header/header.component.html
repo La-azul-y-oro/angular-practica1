@@ -1,8 +1,11 @@
 <header class="h-100 bg-primary-subtle d-flex align-items-center">
-  <div class="col-9">
+  <div class="col-6">
     <a class="navbar-brand ms-5" href="#">Usuarios APP - Taller 4</a>
   </div>
-  <div *ngIf="isLogged" class="col-3 text-end">
-    <button class="btn btn-light me-5">Logout</button>
+  <div *ngIf="username" class="col-5 text-end pe-4 fs-13 fw-bold">
+    {{username}}
+  </div>
+  <div *ngIf="isLogged" class="col-1 text-end">
+    <button class="btn btn-light me-5" (click)="logout()">SALIR</button>
   </div>
 </header>

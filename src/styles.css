@@ -26,3 +26,7 @@ body {
     border-left: 5px solid #a94442;
     /* red */
 }
+
+.text-danger{
+    font-size: 10px !important;
+}
