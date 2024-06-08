@@ -1,6 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import { AuthService } from '../service/auth.service';
+import { UserLogin } from '../interfaces';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,17 +15,26 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular
 export class LoginComponent  {
 
   constructor(
-   // todo crear y agregar login service
-    private fb : FormBuilder
+    private authService : AuthService,
+    private fb : FormBuilder,
+    private router : Router
   ) {}
 
   userForm : FormGroup = this.fb.group({
-    email: ['', Validators.required, Validators.email],
-    password: ['', Validators.required, Validators.minLength(8)]
+    username: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(8)]]
   })
 
   login(){
-    //implementar metodo login
+    let user : UserLogin = this.userForm.value;
+    this.authService.login(user).subscribe({
+      next: (token) => {
+        this.router.navigate(['/usuarios']);
+      },
+      error: (error) => {
+        console.error(error);
+      }
+    })
   }
 
   showMsgError(nameField : string){
