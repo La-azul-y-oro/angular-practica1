@@ -2,7 +2,7 @@ p {
     font-size: 14px;
 }
 
-.font-10{
+.font-10 {
     font-size: 10px;
 }
 
@@ -26,11 +26,45 @@ span {
     transform: translate(-50%, -50%);
 }
 
-.card-container{
-    max-height: 85vh;
-    overflow-y: auto;
+.user-content {
+    padding: 25px 0;
+    height: calc(100vh - 120px);
+    width: 85vw;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.vw-90{
-    width: 90vw;
+.user-list-container {
+    max-height: calc(100vh - 240px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    /* Hace que la scrollbar sea más delgada */
+    scrollbar-color: #888 #f1f1f1;
+    /* Color del pulgar y de la pista */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    /* Internet Explorer 10+ */
+}
+
+/* Estilos para Webkit (Chrome, Safari) */
+.user-list-container::-webkit-scrollbar {
+    width: 5px;
+    /* Ancho de la scrollbar vertical */
+}
+
+.user-list-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    /* Color de fondo de la pista de la scrollbar */
+}
+
+.user-list-container::-webkit-scrollbar-thumb {
+    background: #888;
+    /* Color del pulgar de la scrollbar */
+    border-radius: 4px;
+    /* Bordes redondeados del pulgar */
+}
+
+.user-list-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* Color del pulgar de la scrollbar cuando se pasa el cursor */
 }

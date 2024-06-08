@@ -1,26 +1,46 @@
-<div class="vw-90">
-  <div [ngClass]="{ 'shadow-div': showModal }">
-    <div class="d-flex row my-3 justify-content-between">
-      <h4 class="col-4">Listado de usuarios:</h4>
-      <button type="button" class="btn btn-primary col-2" (click)="handleModal(true)">Crear usuario</button>
-    </div>
-    <div class="d-flex row gap-1 justify-content-center card-container">
-      <div *ngIf="userList.length == 0"><p>No existen usuarios creados</p></div>
-      <div *ngFor="let pepe of userList" class="card col-sm-12 col-md-5 col-lg-3">
+<div class="user-content" [ngClass]="{ 'shadow-div': showModal }">
+  <div class="d-flex justify-content-between w-100">
+    <h4 class="col-4 align-self-center">Listado de usuarios:</h4>
+    <button
+      type="button"
+      class="btn btn-primary col-sm-4 col-md-2"
+      (click)="handleModal(true)"
+    >
+      Crear usuario
+    </button>
+  </div>
+  <div class="w-100">
+    <p *ngIf="userList.length == 0">No existen usuarios creados</p>
+    <div class="user-list-container mt-3 d-flex row gap-1 justify-content-center">
+      <div
+        *ngFor="let user of userList"
+        class="card col-sm-12 col-md-5 col-lg-3"
+      >
         <div class="card-body">
-          <h5 class="card-title">{{ pepe.username }}</h5>
-          <p class="card-text"><span>email:</span> {{ pepe.email }}</p>
-          <button type="button" class="btn btn-danger font-10" (click)="deleteUser(pepe.id)">Borrar</button>
+          <h5 class="card-title">{{ user.username }}</h5>
+          <p class="card-text"><span>email:</span> {{ user.email }}</p>
+          <button
+            type="button"
+            class="btn btn-danger font-10"
+            (click)="deleteUser(user.id)"
+          >
+            Borrar
+          </button>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <ng-template [ngIf]="showToast">
-    <app-push [message]="messageToast" (close)="showToast = false"></app-push>
-  </ng-template>
+<ng-template [ngIf]="showToast">
+  <app-push [message]="messageToast" (close)="showToast = false"></app-push>
+</ng-template>
 
-  <div *ngIf="showModal" class="modal-form">
-    <app-edit-user (editUserEmitter) = handleEditEvent($event) (cancelEmitter) = handleModal(false)></app-edit-user>
-  </div>
-  </div>
+<div *ngIf="showModal" class="modal-form">
+  <app-edit-user
+    (editUserEmitter)="handleEditEvent($event)"
+    (cancelEmitter)="handleModal(false)"
+  ></app-edit-user>
+</div>
+
+<!-- d-flex row gap-1 justify-content-center h-75 overflow-auto -->
